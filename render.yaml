@@ -1,0 +1,23 @@
+# Render Blueprint - one-click deployment of the whole app as a single service.
+#
+# In Render: New -> Blueprint -> pick this repository -> Apply.
+# Nothing else needs configuring; the Dockerfile builds the frontend and the
+# API together, and the app runs in demo/fallback mode with no API key.
+#
+# To enable LLM mode later, add LLM_API_KEY in the Render dashboard under
+# Environment. Never commit a key to this repository.
+
+services:
+  - type: web
+    name: it-service-agent
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      # The app reads PORT and binds to it; Render sets this automatically,
+      # but declaring it keeps the Dockerfile default explicit.
+      - key: PORT
+        value: 7860

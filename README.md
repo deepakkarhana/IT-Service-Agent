@@ -1,7 +1,9 @@
 # IT Service Agent
 
-**Live demo: https://deepakkarhana01-it-service-agent.hf.space**
-&nbsp;·&nbsp; No login required. Runs in demo/fallback mode — see [§18](#18-fallback--demo-mode).
+**Deploy-ready:** the whole app runs as a single service from the included
+[`Dockerfile`](Dockerfile) — see [§23 Deployment](#23-deployment) for the
+one-click Render Blueprint. It runs in demo/fallback mode with no API key
+and no configuration ([§18](#18-fallback--demo-mode)).
 
 An internal service agent for IT support. An employee describes a problem in
 plain English; the agent works out what the issue is, finds the policy that
@@ -427,12 +429,22 @@ React frontend from the same origin. This is why the production frontend has no
 backend URL in it at all — it calls `/api/...` on whatever host served the page,
 so the identical build works locally and when deployed.
 
-**Live demo:** https://deepakkarhana01-it-service-agent.hf.space
-(Hugging Face Spaces, Docker runtime, free tier.)
+### One-click: Render Blueprint (free tier, no card required)
+
+1. Push this repository to GitHub (already done).
+2. In [Render](https://dashboard.render.com/): **New → Blueprint** → select this
+   repository → **Apply**.
+3. Render reads [`render.yaml`](render.yaml), builds the Dockerfile and gives
+   you a public `https://<name>.onrender.com` URL.
+
+No environment variables are required. The free instance sleeps after inactivity
+and takes roughly 50 seconds to wake on the first request.
+
+### Any container host
 
 The [`Dockerfile`](Dockerfile) is a standard two-stage build — Node builds the
-frontend, Python runs the app — so it also works unchanged on Render, Railway,
-Fly.io or any container host:
+frontend, Python runs the app — so it works unchanged on Render, Railway,
+Fly.io, Google Cloud Run or any container host:
 
 ```bash
 docker build -t it-service-agent .
@@ -539,6 +551,7 @@ reviewed and what was tested by hand.
 ├── scripts/           setup + dev launchers, and smoke_matrix.py
 ├── tests/             76 pytest tests
 ├── Dockerfile         single-service production build (frontend + API)
+├── render.yaml        one-click Render Blueprint
 ├── .env.example
 └── README.md
 ```
