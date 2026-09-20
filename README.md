@@ -1,9 +1,12 @@
 # IT Service Agent
 
-**Deploy-ready:** the whole app runs as a single service from the included
-[`Dockerfile`](Dockerfile) — see [§23 Deployment](#23-deployment) for the
-one-click Render Blueprint. It runs in demo/fallback mode with no API key
-and no configuration ([§18](#18-fallback--demo-mode)).
+**Live demo: https://it-service-agent.onrender.com**
+&nbsp;·&nbsp; No login or setup required. Runs in demo/fallback mode
+([§18](#18-fallback--demo-mode)).
+
+> Hosted on Render's free tier, which sleeps after inactivity — the **first
+> request can take up to ~50 seconds** while the container wakes. Every request
+> after that is immediate.
 
 An internal service agent for IT support. An employee describes a problem in
 plain English; the agent works out what the issue is, finds the policy that
@@ -429,13 +432,13 @@ React frontend from the same origin. This is why the production frontend has no
 backend URL in it at all — it calls `/api/...` on whatever host served the page,
 so the identical build works locally and when deployed.
 
-### One-click: Render Blueprint (free tier, no card required)
+### Live deployment
 
-1. Push this repository to GitHub (already done).
-2. In [Render](https://dashboard.render.com/): **New → Blueprint** → select this
-   repository → **Apply**.
-3. Render reads [`render.yaml`](render.yaml), builds the Dockerfile and gives
-   you a public `https://<name>.onrender.com` URL.
+**https://it-service-agent.onrender.com** — Render, free tier, Docker runtime.
+
+It was deployed with the included [`render.yaml`](render.yaml) Blueprint:
+**New → Blueprint** → select this repository → **Apply**. Render builds the
+Dockerfile, health-checks `/api/health`, and redeploys on every push to `main`.
 
 No environment variables are required. The free instance sleeps after inactivity
 and takes roughly 50 seconds to wake on the first request.

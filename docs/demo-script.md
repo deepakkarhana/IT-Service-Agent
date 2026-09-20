@@ -6,6 +6,10 @@ are worth keeping.
 
 **Before you start:**
 
+0. Decide which you are demoing from:
+   - **Live:** https://it-service-agent.onrender.com — open it ~2 minutes early,
+     the free tier takes up to 50s to wake from sleep.
+   - **Local:** the steps below. Use this if the venue's wifi is unreliable.
 1. Run `powershell -ExecutionPolicy Bypass -File scripts\dev.ps1`
 2. Open http://localhost:5173 and leave it on the **New Request** screen
 3. Go to **Audit Trail** → **Clear prototype records**, then come back to
