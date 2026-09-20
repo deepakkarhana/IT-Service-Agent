@@ -48,7 +48,7 @@ where the data pack supplied one (REQ-03, REQ-04, REQ-06, REQ-08, REQ-12).
 
 KB-03 (3 years) and ASSET-POL (4-year cycle + Finance sign-off for early
 replacement) give different guidance. **The data pack does not say which one
-takes precedence, and this prototype does not decide.** See README §12.
+takes precedence, and this prototype does not decide.** See README §14.
 
 ---
 

@@ -1,11 +1,20 @@
 # IT Service Agent
 
+**Live demo: https://deepakkarhana01-it-service-agent.hf.space**
+&nbsp;·&nbsp; No login required. Runs in demo/fallback mode — see [§18](#18-fallback--demo-mode).
+
 An internal service agent for IT support. An employee describes a problem in
 plain English; the agent works out what the issue is, finds the policy that
 governs it, and makes one explicit decision about what should happen next —
 resolve it, ask a question, route it to another team, escalate it, or raise a
 ticket. Every answer shows the policy it came from, and every interaction is
 written to an audit trail.
+
+> **The one design decision to know:** the language model *understands*; code
+> *decides*. The LLM only turns a message into structured facts. Every decision,
+> every routing choice and every policy sentence shown to the employee comes
+> from deterministic Python reading the supplied knowledge base — so the agent
+> structurally cannot invent a company policy.
 
 ---
 
@@ -53,8 +62,8 @@ employee message
 The important design choice: **the language model never decides anything and
 never writes policy.** It is used only to read the employee's message and return
 structured facts. The decision and every policy sentence shown to the employee
-come from deterministic Python that reads the knowledge base directly. Section 12
-explains why.
+come from deterministic Python that reads the knowledge base directly.
+Sections 12 (source attribution) and 17 (LLM usage) explain why.
 
 ## 4. Key agent capabilities
 
@@ -127,7 +136,7 @@ Deliberately **not** used: Kubernetes, microservices, a vector database, a real
 database, authentication, message queues. This is a prototype, and each of those
 would cost demo reliability without adding anything the assignment asks for.
 
-## 8. Data sources
+## 8. Knowledge sources (data)
 
 All business knowledge comes from three files, transcribed from the supplied
 assignment data pack:
@@ -155,7 +164,7 @@ Full list, split into *source facts* vs *implementation assumptions*:
 - New ticket IDs are synthetic (`NEW-1001`, `NEW-1002`, …) and labelled
   "prototype-generated" in the UI.
 
-## 10. Agent decision flow
+## 10. How the agent makes decisions
 
 The agent always chooses exactly one of five decisions:
 
@@ -174,7 +183,45 @@ invented scoring system:
 - **MEDIUM** — anything needing human approval or review
 - **LOW** — self-service and informational requests
 
-## 11. Security handling (KB-09)
+## 11. Escalation logic
+
+The agent escalates to a human in exactly three situations, and never invents an
+answer to avoid doing so:
+
+| Trigger | What happens | Team |
+| --- | --- | --- |
+| **Security incident** — suspected phishing, malware, unauthorised access (KB-09) | Matched by fixed patterns in code *before* anything else runs. Always HIGH priority. Cannot be overridden by the LLM. | Security Team |
+| **Conflicting policy** — two retrieved sources disagree and nothing says which wins | Both positions are quoted, the conflict is stated explicitly, and the agent refuses to pick a side | The functions named in those policies (e.g. IT + Finance) |
+| **No supporting policy** — nothing in the knowledge base covers the request | Says *"I don't have enough information to safely resolve this request"* and routes it | IT Support (human triage) |
+
+A privileged/admin access request (REQ-10) falls into the third case and is
+additionally marked HIGH, because it concerns elevated access.
+
+Every escalation creates a ticket with an `Escalated…` status and an
+`escalation_raised` event in the audit trail.
+
+## 12. Source attribution
+
+Nothing is asserted without a citation, and citations are verifiable:
+
+- **Every policy sentence shown to the employee is copied verbatim** from
+  `data/knowledge_base.json` via a single helper, `store.policy_point(id, index)`.
+  Nothing is paraphrased into a new rule.
+- Each sentence is displayed with its **policy ID** (`KB-07`, `ASSET-POL`, …),
+  and the Sources panel shows the full policy text plus a relevance label
+  (`authoritative` = the policy that governs this topic, `supporting` = a strong
+  keyword match) and the BM25 match score.
+- **Tickets carry a `source_policy` field**, so any ticket can be traced back to
+  the policy that justified it.
+- **The audit trail records which policies were retrieved** and which were
+  applied, per interaction.
+- If nothing matches, **no citation is shown at all** — the agent does not
+  attach a weak keyword match to imply coverage that does not exist.
+
+Two tests enforce this: one asserts every displayed sentence exists verbatim in
+the knowledge base, another asserts every cited ID is a real policy ID.
+
+## 13. Security handling (KB-09)
 
 Security is handled by a rule in code, not by model judgement. Fixed patterns
 (phishing, malware, ransomware, unauthorised access, "asking for my password",
@@ -193,7 +240,7 @@ and others) are matched **before** anything else runs. When one matches:
 `tests/test_llm_fallback.py::test_model_cannot_reclassify_a_security_incident`
 proves the override holds even when the model returns `"topic": "password_reset"`.
 
-## 12. Policy conflict handling (KB-03 vs ASSET-POL)
+## 14. Policy conflict handling (KB-03 vs ASSET-POL)
 
 The data pack contains a deliberate conflict:
 
@@ -219,7 +266,7 @@ The agent also distinguishes **reported** from **verified**. An employee saying
 "it's completely dead" is a report; KB-03's earlier-replacement route needs IT to
 verify it. The agent says so rather than treating the claim as confirmed.
 
-## 13. Ticketing
+## 15. Ticketing
 
 A ticket is created only when the decision calls for one — `RESOLVE` and
 `CLARIFY` do not create tickets, which keeps the queue clean. Each ticket holds:
@@ -233,7 +280,7 @@ New tickets use synthetic IDs starting at `NEW-1001` and are tagged
 separate, as the data pack requires, and labels closed tickets as precedent
 rather than policy.
 
-## 14. Audit trail
+## 16. Audit trail
 
 Every interaction produces 8–11 timestamped events: request received, intent
 detected, retrieval, ticket context, policy evaluated, policy conflict (when
@@ -241,7 +288,7 @@ detected), decision, response generated, ticket created / escalation raised, and
 audit record created. Events are grouped per interaction in the UI and persisted
 to `data/runtime/audit_log.json`, so the trail survives a backend restart.
 
-## 15. LLM usage
+## 17. LLM usage
 
 When `LLM_API_KEY` is set, the model is asked to do exactly one job: read the
 message and return JSON containing a topic (from a fixed list of 12), an intent
@@ -263,7 +310,7 @@ verbatim out of `knowledge_base.json`, a model cannot introduce a rule into the
 answer even if it tries. There is a test for exactly that
 (`test_policy_text_is_never_taken_from_the_model`).
 
-## 16. Fallback / demo mode
+## 18. Fallback / demo mode
 
 **If no API key is set, or the LLM call fails for any reason, the application
 keeps working.** The understanding step falls back to deterministic rules, and
@@ -280,7 +327,7 @@ keyword and regex classifier. Covered failure modes, each with a test: no API
 key, timeout, HTTP error, network error, malformed JSON, JSON wrapped in code
 fences, an invented topic, invented entity keys, and an over-long summary.
 
-## 17. Setup instructions
+## 19. Local setup
 
 **Prerequisites:** Python 3.10+ and Node.js 18+.
 
@@ -301,7 +348,7 @@ cd frontend && npm install && cd ..
 cp .env.example .env        # optional - the app runs without it
 ```
 
-## 18. Environment variables
+## 20. Environment variables
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
@@ -314,7 +361,7 @@ cp .env.example .env        # optional - the app runs without it
 
 No key is ever hardcoded. `.env` is git-ignored; `.env.example` is the template.
 
-## 19. How to run
+## 21. How to run
 
 ### Windows (one command)
 
@@ -347,18 +394,66 @@ Then open **http://localhost:5173**.
 > is often already taken. To change it:
 > `scripts\dev.ps1 -BackendPort 8030`, or set `VITE_API_TARGET` to match.
 
-### Tests
+## 22. Testing
 
 ```bash
 .venv/Scripts/python -m pytest tests/ -q          # 76 tests
 .venv/Scripts/python scripts/smoke_matrix.py      # decision table for 25 requests
 ```
 
-`smoke_matrix.py` prints the decision, priority, team and cited sources for a
-spread of requests in one table — handy for checking nothing regressed before a
-demo.
+**What the 76 tests cover** (`tests/`):
 
-## 20. Demo scenarios
+| File | Covers |
+| --- | --- |
+| `test_agent_scenarios.py` | All 12 required scenarios — password lockout, guest Wi-Fi, VPN expiry, contractor VPN, non-catalog software, printer, mailbox quota, expense routing, phishing escalation, home-office equipment, the laptop policy conflict, and the vague request — plus edge cases (laptop with unknown age, VPN with unknown employee type, unsupported requests) |
+| `test_llm_fallback.py` | Every way the LLM can fail: no key, timeout, HTTP error, network error, malformed JSON, code-fenced JSON, an invented topic, invented entity keys, an over-long summary — and two adversarial tests proving the model cannot reclassify a security incident or inject policy text |
+
+Each scenario test asserts four things: the **decision**, the **cited source**,
+the **assigned team**, and that **no unsupported answer** was given.
+
+Three cross-cutting guarantees run against 12 different messages each:
+
+1. every policy sentence displayed exists **verbatim** in the knowledge base;
+2. every cited policy ID is a real ID;
+3. every interaction produces a complete, ordered audit trail.
+
+`smoke_matrix.py` prints the decision, priority, team and cited sources for 25
+requests in one table — a quick regression check before a demo.
+
+## 23. Deployment
+
+The app deploys as **one service**: FastAPI serves both the API and the built
+React frontend from the same origin. This is why the production frontend has no
+backend URL in it at all — it calls `/api/...` on whatever host served the page,
+so the identical build works locally and when deployed.
+
+**Live demo:** https://deepakkarhana01-it-service-agent.hf.space
+(Hugging Face Spaces, Docker runtime, free tier.)
+
+The [`Dockerfile`](Dockerfile) is a standard two-stage build — Node builds the
+frontend, Python runs the app — so it also works unchanged on Render, Railway,
+Fly.io or any container host:
+
+```bash
+docker build -t it-service-agent .
+docker run --rm -p 7860:7860 it-service-agent   # then open http://localhost:7860
+```
+
+To run the production layout without Docker:
+
+```bash
+cd frontend && npm run build && cd ..
+.venv/Scripts/python -m uvicorn backend.app.main:app --port 7860
+```
+
+FastAPI serves `frontend/dist` automatically when that directory exists, and
+ignores it when it doesn't — so the local two-server dev setup is unaffected.
+
+No secrets are needed to deploy. If you want LLM mode in production, set
+`LLM_API_KEY` in the hosting platform's environment-variable settings — never in
+the repository.
+
+## 24. Demo scenarios
 
 The New Request screen has one-click demo buttons for each of these.
 
@@ -379,7 +474,7 @@ as precedent, explicitly *not* as policy).
 
 A minute-by-minute script is in **[docs/demo-script.md](docs/demo-script.md)**.
 
-## 21. Limitations
+## 25. Limitations
 
 Honest list — these are prototype boundaries, not hidden bugs.
 
@@ -401,12 +496,12 @@ Honest list — these are prototype boundaries, not hidden bugs.
 - **Only the 11 supplied policies are known.** Anything else is explicitly
   out of scope and escalated.
 
-## 22. AI tools used
+## 26. AI tools used
 
 See **[docs/ai-tools.md](docs/ai-tools.md)** for what was AI-generated, what was
 reviewed and what was tested by hand.
 
-## 23. Future improvements
+## 27. Future improvements
 
 1. **Real integrations** — ServiceNow/Jira for tickets, SMTP for the Security
    mailbox, SSO for identity.
@@ -421,7 +516,7 @@ reviewed and what was tested by hand.
 6. **Confidence scores in the UI** — show retrieval margin so a reviewer can see
    when the agent was close to asking instead of answering.
 
-## 24. Repository layout
+## 28. Repository layout
 
 ```
 ├── backend/
@@ -443,6 +538,7 @@ reviewed and what was tested by hand.
 ├── docs/              Architecture, assumptions, AI tools, demo script, slides, Q&A
 ├── scripts/           setup + dev launchers, and smoke_matrix.py
 ├── tests/             76 pytest tests
+├── Dockerfile         single-service production build (frontend + API)
 ├── .env.example
 └── README.md
 ```

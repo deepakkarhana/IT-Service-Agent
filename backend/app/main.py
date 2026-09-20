@@ -10,11 +10,18 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from .agent.orchestrator import get_agent
-from .config import settings
+from .config import REPO_ROOT, settings
 from .data_store import get_store
 from .models import AgentRequestIn, AgentResult
+
+# In production the built frontend is served by this same app, so the browser
+# calls /api/... on its own origin. There is no hardcoded backend URL anywhere
+# in the frontend, which is why the same build works locally and when deployed.
+FRONTEND_DIST = REPO_ROOT / "frontend" / "dist"
 
 app = FastAPI(
     title="IT Service Agent API",
@@ -199,3 +206,33 @@ def reset_runtime() -> dict[str, str]:
     """Clear prototype-generated tickets and audit events (demo convenience)."""
     get_store().reset_runtime()
     return {"status": "cleared"}
+
+
+# --------------------------------------------------------------------------
+# Static frontend (production only).
+#
+# Registered last so it never shadows an /api route. When frontend/dist does
+# not exist - the normal local setup, where Vite serves the UI on :5173 and
+# proxies /api here - this block is skipped entirely.
+# --------------------------------------------------------------------------
+if FRONTEND_DIST.is_dir():
+    app.mount(
+        "/assets",
+        StaticFiles(directory=FRONTEND_DIST / "assets"),
+        name="assets",
+    )
+
+    @app.get("/", include_in_schema=False)
+    def serve_index() -> FileResponse:
+        return FileResponse(FRONTEND_DIST / "index.html")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def serve_spa(full_path: str) -> FileResponse:
+        """Serve a real file if it exists, otherwise the SPA entry point."""
+        # An unmatched /api path is a genuine 404, not a page to render.
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Unknown API endpoint")
+        candidate = (FRONTEND_DIST / full_path).resolve()
+        if candidate.is_file() and candidate.is_relative_to(FRONTEND_DIST.resolve()):
+            return FileResponse(candidate)
+        return FileResponse(FRONTEND_DIST / "index.html")

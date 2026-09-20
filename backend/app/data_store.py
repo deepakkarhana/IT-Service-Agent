@@ -34,7 +34,14 @@ class DataStore:
     def __init__(self, data_dir: Path = DATA_DIR, runtime_dir: Path = RUNTIME_DIR):
         self.data_dir = Path(data_dir)
         self.runtime_dir = Path(runtime_dir)
-        self.runtime_dir.mkdir(parents=True, exist_ok=True)
+        # A hosted container may have a read-only filesystem. The agent still
+        # works in that case - records live in memory for the session - so this
+        # must never prevent the app from starting.
+        self.persistence_enabled = True
+        try:
+            self.runtime_dir.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            self.persistence_enabled = False
         self._lock = threading.Lock()
 
         self.policies: list[dict[str, Any]] = _read_json(
@@ -118,15 +125,21 @@ class DataStore:
     def _audit_path(self) -> Path:
         return self.runtime_dir / "audit_log.json"
 
+    def _write_json(self, path: Path, payload: Any) -> None:
+        """Best-effort write. A read-only filesystem disables persistence
+        rather than breaking the interaction the user just had."""
+        if not self.persistence_enabled:
+            return
+        try:
+            path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        except OSError:
+            self.persistence_enabled = False
+
     def _persist_tickets(self) -> None:
-        payload = [t.model_dump() for t in self.generated_tickets]
-        self._tickets_path.write_text(
-            json.dumps(payload, indent=2), encoding="utf-8"
-        )
+        self._write_json(self._tickets_path, [t.model_dump() for t in self.generated_tickets])
 
     def _persist_audit(self) -> None:
-        payload = [e.model_dump() for e in self.audit_log]
-        self._audit_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        self._write_json(self._audit_path, [e.model_dump() for e in self.audit_log])
 
     def _load_runtime(self) -> None:
         """Reload previously generated records; corrupt files are ignored."""

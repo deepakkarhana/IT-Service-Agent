@@ -1,0 +1,19 @@
+# Keep the build context small and never ship secrets or local state.
+.env
+.env.local
+.git
+.gitignore
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+frontend/node_modules/
+frontend/dist/
+data/runtime/*.json
+docs/
+tests/
+scripts/
+*.md
+!README.md
