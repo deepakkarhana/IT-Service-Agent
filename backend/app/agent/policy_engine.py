@@ -715,7 +715,7 @@ def _security(store: DataStore, ent: Entities) -> PolicyOutcome:
     ]
     notice = None
     if ent.already_forwarded:
-        actions.insert(1, "Do not forward it to anyone else from this point on.")
+        actions[1] = "Do not forward it to anyone else from this point on."
         notice = (
             "You mentioned the email was already forwarded to other people. KB-09 is "
             "explicit that suspected phishing must not be forwarded to other "

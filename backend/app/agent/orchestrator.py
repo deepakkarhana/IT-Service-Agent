@@ -243,8 +243,13 @@ class ITServiceAgent:
         summary = llm_summary or rule_based_summary(understanding)
         understanding.summary = summary
         response = build_response(understanding, outcome, summary)
-        audit.add("response_generated", "Employee response generated from policy text.",
-                  policy_points=[p.source_id for p in outcome.policy_points])
+        audit.add(
+            "response_generated",
+            "Employee response generated from policy text."
+            if outcome.policy_points
+            else "Employee response generated - no policy text to cite.",
+            policy_points=[p.source_id for p in outcome.policy_points],
+        )
 
         # Step 6 --------------------------------------------------------------
         ticket: Optional[Ticket] = None

@@ -65,18 +65,12 @@ def build_response(
     understanding: Understanding, outcome: PolicyOutcome, summary: str
 ) -> AgentResponseText:
     """Assemble the four things the employee is told."""
-    what_next = outcome.what_happens_next
-    if outcome.clarifying_question:
-        what_next = f"{what_next} {outcome.clarifying_question}".strip()
-
-    actions = list(outcome.employee_actions)
-    if outcome.clarifying_question and not actions:
-        actions = [outcome.clarifying_question]
-
+    # The clarifying question gets its own highlighted box in the UI, so it is
+    # deliberately not repeated in "what happens next" or "what you need to do".
     return AgentResponseText(
         understood=summary,
         policy_says=outcome.policy_points,
-        what_happens_next=what_next,
-        your_actions=actions,
+        what_happens_next=outcome.what_happens_next,
+        your_actions=list(outcome.employee_actions),
         notice=outcome.notice,
     )
