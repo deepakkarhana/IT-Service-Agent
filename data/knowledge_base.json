@@ -1,0 +1,140 @@
+{
+  "source_note": "Knowledge base entries transcribed from the supplied assignment data pack. No policies have been added, removed or reworded in meaning.",
+  "policies": [
+    {
+      "id": "KB-01",
+      "title": "Password Reset",
+      "category": "Account Access",
+      "content": "Employees can reset their own password using the self-service portal. If an account is locked out after 5 failed attempts, the employee must contact IT to have the account unlocked manually. No approval is required for a password reset.",
+      "key_points": [
+        "Self-service portal is the standard path for a password reset.",
+        "Account lockout after 5 failed attempts requires IT to unlock the account manually.",
+        "No approval is required."
+      ],
+      "owning_function": "IT Support"
+    },
+    {
+      "id": "KB-02",
+      "title": "VPN Access",
+      "category": "Network Access",
+      "content": "Full-time employees automatically receive VPN access. Contractors require manager approval through the access request form. VPN credentials expire every 90 days and the employee must renew their credentials.",
+      "key_points": [
+        "Full-time employees receive VPN access automatically.",
+        "Contractors require manager approval through the access request form.",
+        "Credentials expire every 90 days.",
+        "The employee is responsible for renewing expired credentials."
+      ],
+      "owning_function": "IT Support"
+    },
+    {
+      "id": "KB-03",
+      "title": "Laptop Replacement",
+      "category": "Hardware",
+      "content": "Laptops are eligible for replacement after 3 years of service, or earlier in case of verified hardware failure. Replacement requests should be raised at least 2 weeks before the intended replacement date.",
+      "key_points": [
+        "Eligible for replacement after 3 years of service.",
+        "Earlier replacement is possible in case of verified hardware failure.",
+        "Raise the request at least 2 weeks before the intended replacement date."
+      ],
+      "owning_function": "IT Support"
+    },
+    {
+      "id": "KB-04",
+      "title": "Software Installation",
+      "category": "Software",
+      "content": "Software that is part of the approved catalog can be self-installed by the employee. Software that is not in the approved catalog requires an IT Security review. The review takes 3 to 5 business days.",
+      "key_points": [
+        "Approved catalog software can be self-installed.",
+        "Non-catalog software requires IT Security review.",
+        "IT Security review takes 3-5 business days."
+      ],
+      "owning_function": "IT Security"
+    },
+    {
+      "id": "KB-05",
+      "title": "Printer Troubleshooting",
+      "category": "Hardware",
+      "content": "For printer issues, first check the printer queue, then restart the print spooler. If the issue persists, log a ticket with the printer asset tag.",
+      "key_points": [
+        "Check the printer queue.",
+        "Restart the print spooler.",
+        "If the issue persists, log a ticket that includes the printer asset tag."
+      ],
+      "owning_function": "IT Support"
+    },
+    {
+      "id": "KB-06",
+      "title": "Email Mailbox Quota",
+      "category": "Email",
+      "content": "The default mailbox quota is 25GB. Employees should archive old mail when nearing the quota. An increase beyond 25GB requires manager approval, up to a maximum of 50GB.",
+      "key_points": [
+        "Default quota is 25GB.",
+        "Archive old mail when nearing the quota.",
+        "Increase beyond 25GB requires manager approval.",
+        "Maximum quota is 50GB."
+      ],
+      "owning_function": "IT Support"
+    },
+    {
+      "id": "KB-07",
+      "title": "Guest Wi-Fi",
+      "category": "Network Access",
+      "content": "Guest Wi-Fi credentials are valid for 24 hours. Any employee can generate guest credentials from the front-desk kiosk. No IT ticket is required.",
+      "key_points": [
+        "Guest credentials are valid for 24 hours.",
+        "Any employee can generate them at the front-desk kiosk.",
+        "No IT ticket is required."
+      ],
+      "owning_function": "Self-service"
+    },
+    {
+      "id": "KB-08",
+      "title": "Expense Software",
+      "category": "Business Applications",
+      "content": "Access to the expense software is granted by Finance, not IT. IT can only assist with login or technical issues once an account already exists.",
+      "key_points": [
+        "Finance grants access to the expense software.",
+        "IT does not grant expense software access.",
+        "IT assists with login or technical problems on an existing account."
+      ],
+      "owning_function": "Finance (access) / IT Support (technical issues)"
+    },
+    {
+      "id": "KB-09",
+      "title": "Security Incident Reporting",
+      "category": "Security",
+      "content": "Suspected phishing emails, malware, or unauthorized access attempts must be reported immediately to security@veridian-corp.example. Such emails must not be forwarded to other employees.",
+      "key_points": [
+        "Report suspected phishing, malware or unauthorized access immediately.",
+        "Report to security@veridian-corp.example.",
+        "Do not forward the suspicious email to other employees."
+      ],
+      "owning_function": "Security Team"
+    },
+    {
+      "id": "KB-10",
+      "title": "Work-From-Home Equipment",
+      "category": "Hardware",
+      "content": "Employees working remotely more than 3 days per week are eligible for a one-time home-office equipment allowance. The request requires manager sign-off. Finance processes the allowance. IT only handles equipment shipping after approval.",
+      "key_points": [
+        "Eligibility requires working remotely more than 3 days per week.",
+        "One-time home-office equipment allowance.",
+        "Manager sign-off is required.",
+        "Finance processes the allowance.",
+        "IT handles equipment shipping only after approval."
+      ],
+      "owning_function": "Manager (approval) / Finance (processing) / IT Support (shipping)"
+    },
+    {
+      "id": "ASSET-POL",
+      "title": "Asset Management Policy Extract",
+      "category": "Asset Management",
+      "content": "All company-issued hardware follows a standard 4-year refresh cycle from date of issue. Early replacement outside this cycle requires Finance sign-off in addition to IT approval.",
+      "key_points": [
+        "Standard 4-year hardware refresh cycle from date of issue.",
+        "Early replacement outside the cycle requires Finance sign-off in addition to IT approval."
+      ],
+      "owning_function": "Finance (sign-off) / IT Support (approval)"
+    }
+  ]
+}

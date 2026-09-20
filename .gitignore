@@ -1,0 +1,28 @@
+# Secrets - never commit
+.env
+.env.local
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Node
+node_modules/
+frontend/dist/
+npm-debug.log*
+.vite/
+
+# Prototype-generated records (recreated at runtime)
+data/runtime/*.json
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

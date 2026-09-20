@@ -1,0 +1,95 @@
+{
+  "source_note": "Ticket queue transcribed from the supplied assignment data pack. Closed tickets remain visible as history; active tickets require action. 'related_policy' is a linkage derived by this prototype (documented in docs/assumptions.md), not a field supplied by the data pack. 'assigned_team' is only populated where the supplied status names the owning team.",
+  "tickets": [
+    {
+      "ticket_id": "TK-1043",
+      "issue_summary": "Laptop replacement request - device 3.2 years old",
+      "category": "Hardware",
+      "status": "Approved - pending fulfillment",
+      "active": true,
+      "assigned_team": "IT Support",
+      "related_policy": ["KB-03", "ASSET-POL"]
+    },
+    {
+      "ticket_id": "TK-1044",
+      "issue_summary": "Non-catalog software installation request",
+      "category": "Software",
+      "status": "Pending Security review",
+      "active": true,
+      "assigned_team": "IT Security",
+      "related_policy": ["KB-04"]
+    },
+    {
+      "ticket_id": "TK-1047",
+      "issue_summary": "Home office equipment request",
+      "category": "Hardware",
+      "status": "Pending Finance",
+      "active": true,
+      "assigned_team": "Finance",
+      "related_policy": ["KB-10"]
+    },
+    {
+      "ticket_id": "TK-1048",
+      "issue_summary": "Phishing email reported",
+      "category": "Security",
+      "status": "Escalated to Security - under investigation",
+      "active": true,
+      "assigned_team": "Security Team",
+      "related_policy": ["KB-09"]
+    },
+    {
+      "ticket_id": "TK-1042",
+      "issue_summary": "VPN credential expired",
+      "category": "Network Access",
+      "status": "Resolved",
+      "active": false,
+      "assigned_team": null,
+      "related_policy": ["KB-02"]
+    },
+    {
+      "ticket_id": "TK-1045",
+      "issue_summary": "Mailbox quota increase request",
+      "category": "Email",
+      "status": "Approved at 35GB",
+      "active": false,
+      "assigned_team": null,
+      "related_policy": ["KB-06"]
+    },
+    {
+      "ticket_id": "TK-1046",
+      "issue_summary": "Printer paper jam",
+      "category": "Hardware",
+      "status": "Resolved",
+      "active": false,
+      "assigned_team": null,
+      "related_policy": ["KB-05"]
+    },
+    {
+      "ticket_id": "TK-1049",
+      "issue_summary": "Password reset",
+      "category": "Account Access",
+      "status": "Resolved",
+      "active": false,
+      "assigned_team": null,
+      "related_policy": ["KB-01"]
+    },
+    {
+      "ticket_id": "TK-1050",
+      "issue_summary": "Admin access request",
+      "category": "Account Access",
+      "status": "Rejected - no business justification",
+      "active": false,
+      "assigned_team": null,
+      "related_policy": []
+    },
+    {
+      "ticket_id": "TK-1051",
+      "issue_summary": "Guest Wi-Fi access",
+      "category": "Network Access",
+      "status": "Resolved",
+      "active": false,
+      "assigned_team": null,
+      "related_policy": ["KB-07"]
+    }
+  ]
+}

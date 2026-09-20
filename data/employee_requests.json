@@ -1,0 +1,125 @@
+{
+  "source_note": "Employee requests transcribed from the supplied assignment data pack. 'initial_action' is only populated where the data pack supplied one. 'email' and 'date_opened' are prototype metadata generated for this demo and are documented in docs/assumptions.md.",
+  "requests": [
+    {
+      "request_id": "REQ-01",
+      "employee": "Aditi Sharma",
+      "email": "aditi.sharma@veridian-corp.example",
+      "date_opened": "2026-09-15",
+      "request": "My laptop is completely dead and will not turn on at all. It is about 3.5 years old. Can I get a replacement?",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-02",
+      "employee": "Vikram Chawla",
+      "email": "vikram.chawla@veridian-corp.example",
+      "date_opened": "2026-09-15",
+      "request": "I have a guest visiting tomorrow who needs Wi-Fi access. How do I arrange that?",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-03",
+      "employee": "Karan Mehta",
+      "email": "karan.mehta@veridian-corp.example",
+      "date_opened": "2026-09-16",
+      "request": "I am locked out of my account. I tried my password 6 times and now it will not let me in.",
+      "initial_action": "Password reset queued"
+    },
+    {
+      "request_id": "REQ-04",
+      "employee": "Ritu Bhatia",
+      "email": "ritu.bhatia@veridian-corp.example",
+      "date_opened": "2026-09-16",
+      "request": "I need a data-analysis tool installed on my machine. It is not in the approved software catalog.",
+      "initial_action": "Waiting on Security review"
+    },
+    {
+      "request_id": "REQ-05",
+      "employee": "Sanjay Oberoi",
+      "email": "sanjay.oberoi@veridian-corp.example",
+      "date_opened": "2026-09-16",
+      "request": "My VPN stopped working. It says my credentials expired.",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-06",
+      "employee": "Meera Iyer",
+      "email": "meera.iyer@veridian-corp.example",
+      "date_opened": "2026-09-17",
+      "request": "The printer on the 3rd floor keeps showing a paper jam but there is no visible jam.",
+      "initial_action": "Technician assigned"
+    },
+    {
+      "request_id": "REQ-07",
+      "employee": "Farhan Ali",
+      "email": "farhan.ali@veridian-corp.example",
+      "date_opened": "2026-09-17",
+      "request": "I work from home 4 days a week. Am I able to get a monitor for my home desk?",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-08",
+      "employee": "Ananya Reddy",
+      "email": "ananya.reddy@veridian-corp.example",
+      "date_opened": "2026-09-18",
+      "request": "I received an email that I think is a phishing attempt. I already forwarded it to a few teammates to warn them.",
+      "initial_action": "Escalated to Security"
+    },
+    {
+      "request_id": "REQ-09",
+      "employee": "Rohit Desai",
+      "email": "rohit.desai@veridian-corp.example",
+      "date_opened": "2026-09-18",
+      "request": "My mailbox is full and I cannot send email any more.",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-10",
+      "employee": "Kavya Pillai",
+      "email": "kavya.pillai@veridian-corp.example",
+      "date_opened": "2026-09-18",
+      "request": "I need admin access to the finance reporting server.",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-11",
+      "employee": "Nikhil Bansal",
+      "email": "nikhil.bansal@veridian-corp.example",
+      "date_opened": "2026-09-19",
+      "request": "I am a new contractor and I need VPN access to start work.",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-12",
+      "employee": "Sneha Kulkarni",
+      "email": "sneha.kulkarni@veridian-corp.example",
+      "date_opened": "2026-09-19",
+      "request": "I cannot log into the expense tool. I already have an account but it says invalid credentials.",
+      "initial_action": "Waiting for screenshot"
+    },
+    {
+      "request_id": "REQ-13",
+      "employee": "Aman Gupta",
+      "email": "aman.gupta@veridian-corp.example",
+      "date_opened": "2026-09-19",
+      "request": "My laptop screen is flickering. The laptop is 2 years old. I am not sure if this needs a repair or a replacement.",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-14",
+      "employee": "Tanya Chopra",
+      "email": "tanya.chopra@veridian-corp.example",
+      "date_opened": "2026-09-19",
+      "request": "I would like approval to install a browser extension that helps with productivity tracking.",
+      "initial_action": null
+    },
+    {
+      "request_id": "REQ-15",
+      "employee": "Rahul Menon",
+      "email": "rahul.menon@veridian-corp.example",
+      "date_opened": "2026-09-19",
+      "request": "hey can you help, its not working",
+      "initial_action": null
+    }
+  ]
+}

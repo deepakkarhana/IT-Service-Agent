@@ -1,0 +1,2 @@
+# Keeps this directory in git. Prototype-generated tickets and audit events
+# are written here at runtime and are git-ignored.
