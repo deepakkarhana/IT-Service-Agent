@@ -550,7 +550,8 @@ reviewed and what was tested by hand.
 │   └── requirements.txt
 ├── frontend/          React + Vite UI (5 screens)
 ├── data/              The supplied data pack + data/runtime/ for generated records
-├── docs/              Architecture, assumptions, AI tools, demo script, slides, Q&A
+├── docs/              Architecture, assumptions, AI tools, demo script, Q&A
+│                     + IT-Service-Agent-Presentation.pptx (10-slide deck)
 ├── scripts/           setup + dev launchers, and smoke_matrix.py
 ├── tests/             76 pytest tests
 ├── Dockerfile         single-service production build (frontend + API)

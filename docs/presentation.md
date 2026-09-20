@@ -1,7 +1,11 @@
 # Presentation — 10 slides
 
-Content for a 10-slide deck. Each slide has a title, the bullets to put on the
-slide, and speaker notes. Keep the slides light — the live demo does the work.
+> **The built deck is [`IT-Service-Agent-Presentation.pptx`](IT-Service-Agent-Presentation.pptx)**
+> in this folder — 10 slides, with these speaker notes already attached to each
+> slide. This file is the source content behind it.
+
+Each slide has a title, the bullets on the slide, and speaker notes. Keep the
+slides light — the live demo does the work.
 
 ---
 
